@@ -12,7 +12,8 @@ class RoleScreen extends StatelessWidget {
         title: const Text('Roles'),
         automaticallyImplyLeading: false, // Managed by WorkspaceScaffold
       ),
-      body: SingleChildScrollView( // Wrap with SingleChildScrollView
+      body: SingleChildScrollView(
+        // Wrap with SingleChildScrollView
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
@@ -34,7 +35,10 @@ class RoleScreen extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text('当番一覧', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+        const Text(
+          '当番一覧',
+          style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+        ),
         const SizedBox(height: 16),
         GridView.builder(
           shrinkWrap: true,
@@ -48,7 +52,10 @@ class RoleScreen extends StatelessWidget {
           itemBuilder: (context, index) {
             if (index == 6) {
               return InkWell(
-                onTap: () => Navigator.pushNamed(context, '/workspace/$workspaceId/role/new'),
+                onTap: () => Navigator.pushNamed(
+                  context,
+                  '/workspace/$workspaceId/role/new',
+                ),
                 child: Container(
                   decoration: BoxDecoration(
                     color: Colors.grey.shade300,
@@ -61,8 +68,14 @@ class RoleScreen extends StatelessWidget {
             return Column(
               children: [
                 const CircleAvatar(radius: 30, child: Icon(Icons.local_offer)),
-                const SizedBox(height: 4),
-                Text('Role ${index + 1}', textAlign: TextAlign.center, overflow: TextOverflow.ellipsis),
+                const SizedBox(height: 8),
+                Expanded(
+                  child: Text(
+                    'Role ${index + 1}',
+                    textAlign: TextAlign.center,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
               ],
             );
           },
@@ -75,7 +88,10 @@ class RoleScreen extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text('担当当番', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+        const Text(
+          '担当当番',
+          style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+        ),
         const SizedBox(height: 16),
         ListView.separated(
           shrinkWrap: true,
@@ -96,11 +112,14 @@ class RoleScreen extends StatelessWidget {
     );
   }
 
-    Widget _buildRoleShareSection() {
+  Widget _buildRoleShareSection() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text('ロールシェアの残高', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+        const Text(
+          'ロールシェアの残高',
+          style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+        ),
         const SizedBox(height: 16),
         ListView.separated(
           shrinkWrap: true,
