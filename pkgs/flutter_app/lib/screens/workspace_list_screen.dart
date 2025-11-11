@@ -50,12 +50,18 @@ class _WorkspaceListScreenState extends State<WorkspaceListScreen> {
                 ),
                 title: Text(workspace.name),
                 onTap: () {
-                  // TODO: Navigate to workspace detail screen
+                  Navigator.pushNamed(context, '/workspace/${workspace.id}');
                 },
               );
             },
           );
         },
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.pushNamed(context, '/workspace/new');
+        },
+        child: const Icon(Icons.add),
       ),
     );
   }
