@@ -12,15 +12,20 @@ class RoleScreen extends StatelessWidget {
         title: const Text('Roles'),
         automaticallyImplyLeading: false, // Managed by WorkspaceScaffold
       ),
-      body: ListView(
-        padding: const EdgeInsets.all(16.0),
-        children: [
-          _buildAllRolesSection(context),
-          const SizedBox(height: 32),
-          _buildMyRolesSection(),
-          const SizedBox(height: 32),
-          _buildRoleShareSection(),
-        ],
+      body: SingleChildScrollView( // Wrap with SingleChildScrollView
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildAllRolesSection(context),
+              const SizedBox(height: 32),
+              _buildMyRolesSection(),
+              const SizedBox(height: 32),
+              _buildRoleShareSection(),
+            ],
+          ),
+        ),
       ),
     );
   }
