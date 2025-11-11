@@ -7,12 +7,14 @@ enum HeaderType {
 
 class CustomHeader extends StatelessWidget implements PreferredSizeWidget {
   final HeaderType type;
+  final String? workspaceId;
   final String? workspaceName;
   final String? workspaceImageUrl;
 
   const CustomHeader({
     super.key,
     required this.type,
+    this.workspaceId,
     this.workspaceName,
     this.workspaceImageUrl,
   });
@@ -65,12 +67,19 @@ class CustomHeader extends StatelessWidget implements PreferredSizeWidget {
   Widget _buildUserMenu(BuildContext context) {
     return PopupMenuButton<String>(
       onSelected: (value) {
-        // TODO: Handle menu actions
         if (value == 'logout') {
           Navigator.of(context).pushNamedAndRemoveUntil('/login', (route) => false);
         }
+        if (value == 'settings' && workspaceId != null) {
+           Navigator.of(context).pushNamed('/workspace/$workspaceId/settings');
+        }
       },
       itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+        if (workspaceId != null)
+           const PopupMenuItem<String>(
+            value: 'settings',
+            child: Text('ワークスペース設定'),
+          ),
         const PopupMenuItem<String>(
           value: 'profile',
           child: Text('プロフィール'),

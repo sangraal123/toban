@@ -1,7 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'screens/history_screen.dart';
+import 'screens/login_screen.dart';
+import 'screens/member_screen.dart';
+import 'screens/role_assign_screen.dart';
+import 'screens/role_edit_screen.dart';
+import 'screens/role_new_screen.dart';
+import 'screens/settings_screen.dart';
 import 'screens/signup_screen.dart';
-import 'screens/workspace_list_screen.dart'; // Import WorkspaceListScreen
+import 'screens/splits_screen.dart';
+import 'screens/transaction_screen.dart';
+import 'screens/workspace_list_screen.dart';
+import 'screens/role_screen.dart';
+import 'screens/workspace_new_screen.dart';
+import 'screens/workspace_scaffold_screen.dart';
 
 // (CustomColors class definition remains the same)
 class CustomColors {
@@ -100,68 +111,51 @@ class MyApp extends StatelessWidget {
       routes: {
         '/login': (context) => const LoginScreen(),
         '/signup': (context) => const SignUpScreen(),
-        '/workspace': (context) => const WorkspaceListScreen(), // Add workspace route
+        '/workspace': (context) => const WorkspaceListScreen(),
+        '/workspace/new': (context) => const WorkspaceNewScreen(),
       },
-    );
-  }
-}
+      onGenerateRoute: (settings) {
+        if (settings.name == null) return null;
 
-class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
+        final uri = Uri.parse(settings.name!);
+        final pathSegments = uri.pathSegments;
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-          child: Column(
-            children: [
-              Expanded(
-                child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SizedBox(
-                        width: 160,
-                        child: SvgPicture.asset(
-                          'assets/images/toban-logo.svg',
-                        ),
-                      ),
-                      const SizedBox(height: 20),
-                      const Text(
-                        'Toban -当番-',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Color(0xFF374151), // gray-800
-                          fontSize: 16,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  // Navigate to workspace and remove all previous routes
-                  Navigator.of(context).pushNamedAndRemoveUntil('/workspace', (route) => false);
-                },
-                style: ElevatedButton.styleFrom(
-                  minimumSize: const Size(double.infinity, 50),
-                ),
-                child: const Text('Login'),
-              ),
-              TextButton(
-                onPressed: () {
-                  // Navigate to signup screen
-                  Navigator.pushNamed(context, '/signup');
-                },
-                child: const Text("Don't have an account? Sign Up"),
-              )
-            ],
-          ),
-        ),
-      ),
+        if (pathSegments.isEmpty) return null;
+
+        // Workspace-related routes
+        if (pathSegments.first == 'workspace') {
+          if (pathSegments.length == 2) { // e.g., /workspace/123
+            final id = pathSegments[1];
+            return MaterialPageRoute(builder: (_) => WorkspaceScaffoldScreen(workspaceId: id), settings: settings);
+          }
+          if (pathSegments.length == 3) { // e.g., /workspace/123/settings
+            final id = pathSegments[1];
+            final page = pathSegments[2];
+            if (page == 'settings') {
+              return MaterialPageRoute(builder: (_) => SettingsScreen(workspaceId: id), settings: settings);
+            }
+            if (page == 'history') {
+              return MaterialPageRoute(builder: (_) => HistoryScreen(workspaceId: id), settings: settings);
+            }
+          }
+          if (pathSegments.length == 4 && pathSegments[2] == 'role' && pathSegments[3] == 'new') { // e.g., /workspace/123/role/new
+            final id = pathSegments[1];
+            return MaterialPageRoute(builder: (_) => RoleNewScreen(workspaceId: id), settings: settings);
+          }
+          if (pathSegments.length == 5 && pathSegments[2] == 'role') { // e.g., /workspace/123/role/456/edit
+            final id = pathSegments[1];
+            final roleId = pathSegments[3];
+            final action = pathSegments[4];
+            if (action == 'edit') {
+              return MaterialPageRoute(builder: (_) => RoleEditScreen(workspaceId: id, roleId: roleId), settings: settings);
+            }
+            if (action == 'assign') {
+              return MaterialPageRoute(builder: (_) => RoleAssignScreen(workspaceId: id, roleId: roleId), settings: settings);
+            }
+          }
+        }
+        return null;
+      },
     );
   }
 }
